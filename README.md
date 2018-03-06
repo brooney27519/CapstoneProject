@@ -1,5 +1,5 @@
 # CapstoneProject
-Next Word Prediction App
+<h3>Next Word Prediction App</h3>
 
 This is the Capstone project for the Coursera Data Science Specialization through John Hopkins University.
 
