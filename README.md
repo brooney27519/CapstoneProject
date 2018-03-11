@@ -12,7 +12,7 @@ A Shiny app was then constructed with a simple user interface to capture a phras
 <h3>File Information</h3>
 
 <ul>
-<li><strong>app.R</strong>: Shiny app which displays the predicted next word and a list of next best predictions. app.R sources (calls) the gloabl.R file which the Shiny app is launched.</li>
+<li><strong>app.R</strong>: Shiny app which displays the predicted next word and a list of next best predictions. This Shiny app sources (calls) the gloabl.R file when the Shiny app is launched.</li>
 
 <li><strong>global.R</strong> does the following tasks:
 <ol>
@@ -22,4 +22,4 @@ A Shiny app was then constructed with a simple user interface to capture a phras
 </ol>
 </li>
 
-<li><strong>createCleanTextFile.R</strong>: this script is used to clean the source text and then generate the "cleanText1.RDS" and "cleanText2.RDS" files.</li>
+<li><strong>createCleanTextFile.R</strong>: this script is used to clean the source text and then generate the "cleanText1.rds" and "cleanText2.rds" files.</li>
