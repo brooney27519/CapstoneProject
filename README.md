@@ -16,9 +16,9 @@ A Shiny app was then constructed with a simple user interface to capture a phras
 
 <li><strong>global.R</strong> does the following tasks:
 <ol>
-<li>1) loads "full-list-of-bad-words-banned-by-google.txt" which is used to remove profanity from text.</li>
-<li>2) loads the "cleanText1.rds" and "cleanText2.rds" files which contain cleaned text used by the prediction algorithm.</li>
-<li>3) loads the "get_next_word" function which is the algorithm used to predict the next word for the given phrase.</li>
+<li>loads "full-list-of-bad-words-banned-by-google.txt" which is used to remove profanity from text.</li>
+<li>loads the "cleanText1.rds" and "cleanText2.rds" files which contain cleaned text used by the prediction algorithm.</li>
+<li>loads the "get_next_word" function which is the algorithm used to predict the next word for the given phrase.</li>
 </ol>
 </li>
 
