@@ -6,6 +6,7 @@
 
 library(stringr)
 library(tidytext)
+library(stringi)
 
 ## Get and load list of profanity words from stored file
 con <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/full-list-of-bad-words-banned-by-google.txt", open = "r")
@@ -32,6 +33,7 @@ text2 <- readRDS(con2)
 close(con2)
 
 text <- c(text1, text2)
+text <- stri_enc_toutf8(text)
 
 ## This function is the algorithm that predicts the next word for a given phrase
 get_next_word <- function(phrase) {
