@@ -2,8 +2,6 @@
 ## An algorithm makes use of grep and tidytext to predict the word.
 
 library(shiny)
-library(stringr)
-library(tidytext)
 library(tidyr)
 library(dplyr)
 

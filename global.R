@@ -4,6 +4,9 @@
 # profanity words to remove from ngrams
 # function which contains prediction algorithm
 
+library(stringr)
+library(tidytext)
+
 ## Get and load list of profanity words from stored file
 con <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/full-list-of-bad-words-banned-by-google.txt", open = "r")
 bad <- readLines(con)
