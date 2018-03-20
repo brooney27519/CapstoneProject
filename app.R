@@ -5,7 +5,7 @@ library(shiny)
 library(tidyr)
 library(dplyr)
 
-source("global.R")
+source("global.R", encoding = "UTF-8")
 
 # Define UI that allows user to enter a phrase and predicted next word
 ui <- fluidPage(
@@ -96,7 +96,13 @@ server <- function(input, output, session) {
       }
       
       output$prediction <- renderTable({predicted_word[1,1]}, bordered = TRUE, striped = TRUE, colnames = FALSE)
-      output$otherPredictions <- renderTable({predicted_word[-1,]}, bordered = TRUE, striped = TRUE, colnames = FALSE)
+      
+      if(nrow(predicted_word[-1,]) == 0) {
+        no_other <- as_tibble("No other predictions")
+        output$otherPredictions <- renderTable({no_other}, bordered = TRUE, striped = TRUE, colnames = FALSE)
+      } else {
+        output$otherPredictions <- renderTable({predicted_word[-1,]}, bordered = TRUE, striped = TRUE, colnames = FALSE)
+      }
       
     })
     

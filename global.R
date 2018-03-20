@@ -1,15 +1,16 @@
 
 ## This script will load the necessary files and functions used in the PredictNextWord Shiny app:
-# cleanText (the data)
-# profanity words to remove from ngrams
-# function which contains prediction algorithm
+# load profanity words to remove from ngrams
+# load the clean text files created by 'createCleanTextFile.R' script
+# load the function which contains next-word prediction algorithm
 
 library(stringr)
 library(tidytext)
 library(stringi)
 
 ## Get and load list of profanity words from stored file
-con <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/full-list-of-bad-words-banned-by-google.txt", open = "r")
+con <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/full-list-of-bad-words-banned-by-google.txt",
+            open = "r")
 bad <- readLines(con)
 close(con)
 bad <- str_trim(bad)
@@ -19,21 +20,22 @@ data(stop_words)
 stop_wds <- stop_words[which(stop_words$lexicon == 'snowball'),]
 
 my_words <- c("lol","wanna","bout","haha","hahaha","yea","yay","michael","ppl","tho","smh","joe","chris",
-              "steve","matt","btw","tim","boo","los","omfg","hah","mon","ooh","del","hoes","z","zz","zzz","//","@")
+              "steve","matt","btw","tim","boo","los","omfg","hah","mon","ooh","del","hoes","z","zz","zzz")
 
 words_to_remove <- c(stop_wds$word,my_words,bad)
 
 # read in RDS files containing text used as the data
-con1 <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/cleanText1.rds", open = "rb")
+con1 <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/cleanText1.rds",
+             open = "r", encoding = "UTF-8")
 text1 <- readRDS(con1)
 close(con1)
 
-con2 <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/cleanText2.rds", open = "rb")
+con2 <- file(description = "http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/cleanText2.rds",
+             open = "r", encoding = "UTF-8")
 text2 <- readRDS(con2)
 close(con2)
 
 text <- c(text1, text2)
-text <- stri_enc_toutf8(text)
 
 ## This function is the algorithm that predicts the next word for a given phrase
 get_next_word <- function(phrase) {
