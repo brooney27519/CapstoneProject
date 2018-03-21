@@ -1,0 +1,73 @@
+---
+title: "Project - Predict the Next Word App"
+author: "Brian Rooney"
+date: "March 11, 2018"
+output:
+  slidy_presentation: default
+  ioslides_presentation:
+    fig_height: 4
+    smaller: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r loadData, echo=FALSE}
+```
+
+# Overview
+
+<h6>The goal of this project is to create a Shiny app that will predict the next word in a phrase entered by a user.</h6>
+
+<h6>A simple user interface is used to input a phrase and then display the *predicted* next word. An additional tab was added to display the next top predictions.</h6>
+
+<h6>The entire app hinges on developing a prediction model or algorithm capable of predicting the next word for a given text phrase.  Attempts were made at using the "tm" and "quanteda" R packages for the text processing and this resulted in excessive (>20 mins) run times. The final approach used the "Tidy Text" R package with success.</h6>
+
+<strong>Source Data</strong>
+
+<h6>1) Blog, news, and twitter files were imported into R and 20% of each file was used to create a large Text Data Set.</h6>
+<h6>2) The large Text Data Set was cleaned (removed punctuation and non-ASCII characterts).</h6>
+<h6>3) The large Text Data Set was split into 2 parts and saved in individual .RDS files to be used by the Shiny app.</h6>
+
+# How the Prediction Algorithm Works {.smaller}
+
+<h6>The prediction algorithm is based primarily on matching "n-grams" created from a subset of the Text Data Set to the phrase supplied by the user.</h6>
+
+<h6>
+1) Only the last 4 words of the phrase (or less if phrase is smaller) are used as the search pattern in the grep function to extract matching lines in the large Text Data Set and store these lines as a subset.
+2) This subset is put into a tibble and broken down into "n-grams" (1-gram, 2-grams, 3-grams, 4-grams, and 5-grams) using the "Tidy Text" unnest_tokens function.
+3) The tibble of n-grams is then filtered by the words in the input phrase where the first word in the n-grams matches the first word extracted from the phrase, the second word in the n-grams matches the second word from the phrase and so on.  The number of n-grams to search is always one more than the number of words extracted from the phrase.  If the phrase has 4 words, then 5-grams are used.  If phrase has 3 words, then 4-grams are used.
+4) The last word in the n-gram is then the predicted next word.
+5) If no match is found, a "back-off" approach is used where the last word of the phrase is dropped and this is used to filter (n-1)-grams (Ex. if phrase has 3 words, use these to filter 4-grams and if no match, phrase becomes 2 words and used to filter 3-grams, etc...down to 1 word filtering 2-grams or bigrams).
+</h6>
+
+<h6>Example: if the input phrase is "a case of", then grep is used to find this exact string of 3 words in the Text Data Set and store the results as a subset. Since there is only 3 words in the phrase, the algorithm creates a set of 4-grams (1 more than the number of words in the input phrase) and filters this set 4-grams where ngram.word1 = "a", ngram.word2 "case", and ngram.word3 = "of". Since there are 4 words in the 4-grams, the 4th word in the ngrams becomes a potential predicted next word. The highest frequency 4th word among the 4-grams is then the predicted next word.</h6>
+
+# Predictive Performance
+
+<h6>The app's ability to correctly predict the next word was then tested.</h6>
+
++ <h6>20 phrases with known correct predictions were used to test the prediction accuracy.<h6>
++ <h6>The algorithm only predicted 5 next words correctly resulting in 25% accuracy, a dissappointing performance!</h6>
+
+<h5><strong>Issues</strong></h5>
+
+<h6>1) Only a very small sample of the original blogs, news, and twitter was used because larger samples of text resulted in much slower execution times for the algorithm to generate the next word prediction.  However, the smaller sample reduced the likelihood of finding matches to a given input phrase.</h6>
+<h6>2) The use of grep to find matching text is not optimal.  Many different attempts were made to optimize the pattern used by grep, but I found that exact word matching yielded better results in most cases.</h6>
+
+# The Shiny App {.smaller}
+
+<h6>The UI provides the user with a textbox to input a phrase and an action button to send the phrase to the algorithm to predict the next word. The user can select a "Clear" button to remove the previous phrase and enter a new one.</h6>
+
+<h6>The output contains 2 tabs: 1) display the predicted next word, 2) display the next top predictions.</h6>
+
+<h6>The server side of the Shiny app takes the phrase as input, runs the phrase through the algorithm to generate the predicted next word, and then returns the next word to the user interface.</h6>
+
+<h6>The Shiny Application can be accessed at: https://brooney27519.shinyapps.io/WordPredictionApp/</h6>
+
+<h5>Here is sceenshot of the Shiny App User Interface:</h5>
+
+![](http://raw.githubusercontent.com/brooney27519/CapstoneProject/master/ShinyApp_PredictNextWord.PNG)
+
